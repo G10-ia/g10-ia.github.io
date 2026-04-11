@@ -45,13 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnMenuRegistro = document.getElementById("btnMenuRegistro");
   const btnMenuHistorial = document.getElementById("btnMenuHistorial");
   const btnMenuUsuarios = document.getElementById("btnMenuUsuarios");
+  const btnMenuActividad = document.getElementById("btnMenuActividad");
   const seccionRegistro = document.getElementById("seccionRegistro");
   const btnVolverMenuDesdeRegistro = document.getElementById("btnVolverMenuDesdeRegistro");
   const btnVolverMenuDesdeHistorial = document.getElementById("btnVolverMenuDesdeHistorial");
   const btnVolverMenuDesdeUsuarios = document.getElementById("btnVolverMenuDesdeUsuarios");
+  const btnVolverMenuDesdeActividad = document.getElementById("btnVolverMenuDesdeActividad");
   const envolturaBotonVolverRegistro = document.getElementById("envolturaBotonVolverRegistro");
   const envolturaBotonVolverHistorial = document.getElementById("envolturaBotonVolverHistorial");
   const envolturaBotonVolverUsuarios = document.getElementById("envolturaBotonVolverUsuarios");
+  const envolturaBotonVolverActividad = document.getElementById("envolturaBotonVolverActividad");
 
   // =========================
   // OJO CONTRASENA
@@ -98,6 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnRecargarSolicitudesAdmin = document.getElementById("btnRecargarSolicitudesAdmin");
   const resumenSolicitudesAdmin = document.getElementById("resumenSolicitudesAdmin");
   const listaSolicitudesAdmin = document.getElementById("listaSolicitudesAdmin");
+
+  // =========================
+  // PANEL ADMIN ACTIVIDAD
+  // =========================
+  const panelActividadAdmin = document.getElementById("panelActividadAdmin");
+  const btnRecargarActividadAdmin = document.getElementById("btnRecargarActividadAdmin");
+  const resumenActividadAdmin = document.getElementById("resumenActividadAdmin");
+  const listaActividadAdmin = document.getElementById("listaActividadAdmin");
 
   // =========================
   // RESUMEN HISTORIAL
@@ -177,6 +188,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let cargandoHistorialAdmin = false;
   let cargandoUsuariosAdmin = false;
   let cargandoSolicitudesAdmin = false;
+  let cargandoActividadAdmin = false;
 
   // =========================
   // HISTORIAL CACHE
@@ -194,6 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let usuariosAdminCache = [];
   let paginaActualUsuariosAdmin = 1;
   let solicitudesAdminCache = [];
+  let actividadAdminCache = [];
 
   // =========================
   // INSTALACION / DISPOSITIVO
@@ -254,6 +267,11 @@ document.addEventListener("DOMContentLoaded", () => {
     resumenSolicitudesAdmin.textContent = `Mostrando ${totalSolicitudes || 0} solicitudes`;
   }
 
+  function actualizarResumenActividad(totalActividad) {
+    if (!resumenActividadAdmin) return;
+    resumenActividadAdmin.textContent = `Mostrando ${totalActividad || 0} registros de actividad`;
+  }
+
   if (toggleClave && claveLogin && iconoOjoAbierto && iconoOjoCerrado) {
     toggleClave.addEventListener("click", () => {
       const mostrando = claveLogin.type === "text";
@@ -275,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function ocultarTodosLosBotonesVolver() {
-    [envolturaBotonVolverRegistro, envolturaBotonVolverHistorial, envolturaBotonVolverUsuarios].forEach((item) => {
+    [envolturaBotonVolverRegistro, envolturaBotonVolverHistorial, envolturaBotonVolverUsuarios, envolturaBotonVolverActividad].forEach((item) => {
       if (!item) return;
       item.style.display = "none";
       item.style.pointerEvents = "none";
@@ -289,6 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (seccionRegistro) seccionRegistro.style.display = "none";
     if (panelAdmin) panelAdmin.style.display = "none";
     if (panelUsuariosAdmin) panelUsuariosAdmin.style.display = "none";
+    if (panelActividadAdmin) panelActividadAdmin.style.display = "none";
     ocultarTodosLosBotonesVolver();
   }
 
@@ -308,6 +327,10 @@ document.addEventListener("DOMContentLoaded", () => {
       panelUsuariosAdmin.style.display = seccion === "usuarios" ? "block" : "none";
     }
 
+    if (panelActividadAdmin) {
+      panelActividadAdmin.style.display = seccion === "actividad" ? "block" : "none";
+    }
+
     ocultarTodosLosBotonesVolver();
 
     if (seccion === "registro" && envolturaBotonVolverRegistro) {
@@ -324,6 +347,11 @@ document.addEventListener("DOMContentLoaded", () => {
       envolturaBotonVolverUsuarios.style.display = "block";
       envolturaBotonVolverUsuarios.style.pointerEvents = "auto";
     }
+
+    if (seccion === "actividad" && envolturaBotonVolverActividad) {
+      envolturaBotonVolverActividad.style.display = "block";
+      envolturaBotonVolverActividad.style.pointerEvents = "auto";
+    }
   }
 
   function configurarVistaAdminInicial() {
@@ -335,6 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (seccionRegistro) seccionRegistro.style.display = "block";
       if (panelAdmin) panelAdmin.style.display = "none";
       if (panelUsuariosAdmin) panelUsuariosAdmin.style.display = "none";
+      if (panelActividadAdmin) panelActividadAdmin.style.display = "none";
       ocultarTodosLosBotonesVolver();
     }
   }
@@ -651,11 +680,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (menuAdmin) menuAdmin.style.display = "none";
     if (panelAdmin) panelAdmin.style.display = "none";
     if (panelUsuariosAdmin) panelUsuariosAdmin.style.display = "none";
+    if (panelActividadAdmin) panelActividadAdmin.style.display = "none";
     if (seccionRegistro) seccionRegistro.style.display = "block";
     if (envolturaBotonVolverRegistro) envolturaBotonVolverRegistro.style.display = "none";
 
     if (historialAdmin) historialAdmin.innerHTML = "";
     if (listaUsuariosAdmin) listaUsuariosAdmin.innerHTML = "";
+    if (listaActividadAdmin) listaActividadAdmin.innerHTML = "";
 
     limpiarFiltrosAdminUI();
     limpiarBusquedaUsuariosAdminUI();
@@ -664,11 +695,13 @@ document.addEventListener("DOMContentLoaded", () => {
     registrosAdminCache = [];
     usuariosAdminOriginalCache = [];
     usuariosAdminCache = [];
+    actividadAdminCache = [];
     paginaActualAdmin = 1;
     paginaActualUsuariosAdmin = 1;
 
     actualizarResumenHistorial(0, 0, 0);
     actualizarResumenUsuarios(0, 0, 0);
+    actualizarResumenActividad(0);
     ocultarPaginacionAdmin();
     ocultarPaginacionUsuariosAdmin();
   }
@@ -678,6 +711,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (menuAdmin) menuAdmin.style.display = "block";
     if (panelAdmin) panelAdmin.style.display = "none";
     if (panelUsuariosAdmin) panelUsuariosAdmin.style.display = "none";
+    if (panelActividadAdmin) panelActividadAdmin.style.display = "none";
     if (seccionRegistro) seccionRegistro.style.display = "none";
     if (envolturaBotonVolverRegistro) envolturaBotonVolverRegistro.style.display = "none";
   }
@@ -996,6 +1030,8 @@ document.addEventListener("DOMContentLoaded", () => {
       perfilActual = perfil;
       esAdminActual = esAdminPerfil;
 
+      await registrarActividadSistema(perfil, user.id);
+
       localStorage.setItem("usuarioLogeado", perfil.usuario || "");
       mostrarApp(perfil.usuario || user.email || "");
 
@@ -1005,6 +1041,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await cargarHistorialAdmin();
         await cargarUsuariosAdmin();
         await cargarSolicitudesAdmin();
+        await cargarActividadAdmin();
       } else {
         ocultarPanelAdmin();
         configurarVistaAdminInicial();
@@ -1087,6 +1124,8 @@ document.addEventListener("DOMContentLoaded", () => {
       perfilActual = perfil;
       esAdminActual = esAdminPerfil;
 
+      await registrarActividadSistema(perfil, data.user.id);
+
       localStorage.setItem("usuarioLogeado", perfil.usuario || usuarioIngresado);
       if (mensajeLogin) mensajeLogin.textContent = "";
 
@@ -1099,6 +1138,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await cargarHistorialAdmin();
         await cargarUsuariosAdmin();
         await cargarSolicitudesAdmin();
+        await cargarActividadAdmin();
       } else {
         ocultarPanelAdmin();
         configurarVistaAdminInicial();
@@ -1206,8 +1246,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (btnMenuUsuarios) {
-    btnMenuUsuarios.addEventListener("click", () => {
+    btnMenuUsuarios.addEventListener("click", async () => {
       abrirSeccionAdmin("usuarios");
+      await cargarUsuariosAdmin();
+    });
+  }
+
+  if (btnMenuActividad) {
+    btnMenuActividad.addEventListener("click", async () => {
+      abrirSeccionAdmin("actividad");
+      await cargarActividadAdmin();
     });
   }
 
@@ -1225,6 +1273,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (btnVolverMenuDesdeUsuarios) {
     btnVolverMenuDesdeUsuarios.addEventListener("click", () => {
+      mostrarMenuAdmin();
+    });
+  }
+
+  if (btnVolverMenuDesdeActividad) {
+    btnVolverMenuDesdeActividad.addEventListener("click", () => {
       mostrarMenuAdmin();
     });
   }
@@ -1341,6 +1395,102 @@ document.addEventListener("DOMContentLoaded", () => {
     const segundos = String(fecha.getSeconds()).padStart(2, "0");
 
     return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+  }
+
+  function obtenerFechaLocalISO(fecha = new Date()) {
+    const anio = fecha.getFullYear();
+    const mes = String(fecha.getMonth() + 1).padStart(2, "0");
+    const dia = String(fecha.getDate()).padStart(2, "0");
+    return `${anio}-${mes}-${dia}`;
+  }
+
+  function obtenerHoraLocalTexto(fecha = new Date()) {
+    const horas = String(fecha.getHours()).padStart(2, "0");
+    const minutos = String(fecha.getMinutes()).padStart(2, "0");
+    const segundos = String(fecha.getSeconds()).padStart(2, "0");
+    return `${horas}:${minutos}:${segundos}`;
+  }
+
+  function formatearFechaActividad(fechaIso) {
+    if (!fechaIso) return "-";
+
+    const partes = String(fechaIso).split("-");
+    if (partes.length !== 3) return fechaIso;
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+  }
+
+  function normalizarUsuarioClave(valor) {
+    return String(valor || "").trim().toLowerCase();
+  }
+
+  async function registrarActividadSistema(perfil, userId) {
+    if (!perfil || !userId) return;
+
+    const rol = String(perfil.rol || "").toLowerCase();
+    if (rol === "admin") return;
+
+    try {
+      const ahora = new Date();
+      const fechaIngreso = obtenerFechaLocalISO(ahora);
+      const horaIngreso = obtenerHoraLocalTexto(ahora);
+      const ultimaConexion = ahora.toISOString();
+
+      const { data: existente, error: errorConsulta } = await supabase
+        .from("actividad_sistema")
+        .select("id, fecha_ingreso, hora_ingreso")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (errorConsulta) {
+        console.error("Error consultando actividad_sistema:", errorConsulta);
+        return;
+      }
+
+      if (!existente) {
+        const { error: errorInsert } = await supabase
+          .from("actividad_sistema")
+          .insert([
+            {
+              user_id: userId,
+              usuario: perfil.usuario || "",
+              fecha_ingreso: fechaIngreso,
+              hora_ingreso: horaIngreso,
+              ultima_conexion: ultimaConexion
+            }
+          ]);
+
+        if (errorInsert) {
+          console.error("Error insertando actividad_sistema:", errorInsert);
+        }
+
+        return;
+      }
+
+      const payloadActividad = {
+        usuario: perfil.usuario || existente.usuario || "",
+        ultima_conexion: ultimaConexion
+      };
+
+      if (!existente.fecha_ingreso) {
+        payloadActividad.fecha_ingreso = fechaIngreso;
+      }
+
+      if (!existente.hora_ingreso) {
+        payloadActividad.hora_ingreso = horaIngreso;
+      }
+
+      const { error: errorUpdate } = await supabase
+        .from("actividad_sistema")
+        .update(payloadActividad)
+        .eq("id", existente.id);
+
+      if (errorUpdate) {
+        console.error("Error actualizando actividad_sistema:", errorUpdate);
+      }
+    } catch (error) {
+      console.error("Error general registrando actividad del sistema:", error);
+    }
   }
 
   function limitarTextoSinPuntos(texto, maxAncho) {
@@ -1704,6 +1854,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     usuariosAdminCache = usuariosAdminOriginalCache.filter((usuario) => {
       const nombre = String(usuario.usuario || "").toLowerCase();
+      const rol = String(usuario.rol || "").toLowerCase();
+
+      if (rol === "admin" || nombre === "admin") {
+        return false;
+      }
+
       return !texto || nombre.includes(texto);
     });
 
@@ -1911,6 +2067,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div><strong>Installation ID:</strong> ${escaparHtml(textoInstallationId)}</div>
             <div><strong>Info dispositivo:</strong> ${escaparHtml(textoDeviceInfo)}</div>
             <div><strong>Fecha de vinculacion:</strong> ${escaparHtml(textoFechaVinculacion)}</div>
+            <div><strong>Clave:</strong> ${escaparHtml(usuario.clave_panel || "-")}</div>
             <div><strong>Total registros:</strong> ${escaparHtml(usuario.totalRegistros || 0)}</div>
           </div>
 
@@ -2117,6 +2274,89 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarControlesPaginacionUsuariosAdmin();
   }
 
+  function construirHtmlActividadAdmin(registros) {
+    return (registros || []).map((registro) => {
+      return `
+        <div style="border:1px solid #d9d9d9; border-radius:12px; padding:12px; margin-bottom:12px; background:#fff;">
+          <div style="font-size:14px; line-height:1.5;">
+            <div><strong>Usuario:</strong> ${escaparHtml(registro.usuario || "-")}</div>
+            <div><strong>Fecha de ingreso:</strong> ${escaparHtml(formatearFechaActividad(registro.fecha_ingreso))}</div>
+            <div><strong>Hora de ingreso:</strong> ${escaparHtml(registro.hora_ingreso || "-")}</div>
+            <div><strong>Ultima conexion:</strong> ${escaparHtml(formatearCreatedAt(registro.ultima_conexion))}</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function renderizarActividadAdmin() {
+    if (!listaActividadAdmin) return;
+
+    if (!actividadAdminCache.length) {
+      listaActividadAdmin.innerHTML = "<p style='padding:10px;'>No hay actividad registrada todavia</p>";
+      actualizarResumenActividad(0);
+      return;
+    }
+
+    listaActividadAdmin.innerHTML = construirHtmlActividadAdmin(actividadAdminCache);
+    actualizarResumenActividad(actividadAdminCache.length);
+  }
+
+  async function cargarActividadAdmin() {
+    if (!esAdminActual || !listaActividadAdmin || cargandoActividadAdmin) return;
+
+    cargandoActividadAdmin = true;
+    listaActividadAdmin.innerHTML = "<p style='padding:10px;'>Cargando actividad...</p>";
+    actualizarResumenActividad(0);
+
+    try {
+      const { data: perfiles, error: errorPerfiles } = await supabase
+        .from("profiles")
+        .select("id, usuario, rol")
+        .neq("rol", "admin");
+
+      if (errorPerfiles) {
+        console.error("Error cargando perfiles para actividad:", errorPerfiles);
+        listaActividadAdmin.innerHTML = "<p style='padding:10px;'>No se pudo cargar la actividad del sistema</p>";
+        return;
+      }
+
+      const mapaUsuariosNoAdmin = {};
+      (perfiles || []).forEach((perfil) => {
+        if (!perfil || !perfil.id) return;
+        mapaUsuariosNoAdmin[perfil.id] = perfil.usuario || "";
+      });
+
+      const { data: actividad, error: errorActividad } = await supabase
+        .from("actividad_sistema")
+        .select("id, user_id, usuario, fecha_ingreso, hora_ingreso, ultima_conexion")
+        .order("ultima_conexion", { ascending: false });
+
+      if (errorActividad) {
+        console.error("Error cargando actividad del sistema:", errorActividad);
+        listaActividadAdmin.innerHTML = "<p style='padding:10px;'>No se pudo cargar la actividad del sistema</p>";
+        return;
+      }
+
+      actividadAdminCache = (actividad || [])
+        .filter((item) => item && item.user_id && mapaUsuariosNoAdmin[item.user_id])
+        .map((item) => ({
+          ...item,
+          usuario: mapaUsuariosNoAdmin[item.user_id] || item.usuario || "-"
+        }));
+
+      renderizarActividadAdmin();
+    } catch (error) {
+      console.error("Error general cargando actividad del sistema:", error);
+      if (listaActividadAdmin) {
+        listaActividadAdmin.innerHTML = "<p style='padding:10px;'>No se pudo cargar la actividad del sistema</p>";
+      }
+      actualizarResumenActividad(0);
+    } finally {
+      cargandoActividadAdmin = false;
+    }
+  }
+
   async function cargarHistorialAdmin() {
     if (!esAdminActual) {
       ocultarPanelAdmin();
@@ -2250,14 +2490,47 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const { data: solicitudesClave, error: errorSolicitudesClave } = await supabase
+        .from("solicitudes_acceso")
+        .select("auth_user_id, usuario, clave, updated_at, created_at")
+        .order("updated_at", { ascending: false });
+
+      if (errorSolicitudesClave) {
+        console.error("Error cargando claves de solicitudes:", errorSolicitudesClave);
+        renderErrorUsuarios(errorSolicitudesClave);
+        return;
+      }
+
       const mapaInstalaciones = {};
       (instalaciones || []).forEach((instalacion) => {
         if (!instalacion || !instalacion.user_id) return;
         mapaInstalaciones[instalacion.user_id] = instalacion;
       });
 
+      const mapaClavesPorUserId = {};
+      const mapaClavesPorUsuario = {};
+      (solicitudesClave || []).forEach((solicitud) => {
+        if (!solicitud) return;
+
+        const claveTexto = String(solicitud.clave || "").trim();
+        if (!claveTexto) return;
+
+        const authUserId = solicitud.auth_user_id || "";
+        const usuarioSolicitudTexto = normalizarUsuarioClave(solicitud.usuario || "");
+
+        if (authUserId && !mapaClavesPorUserId[authUserId]) {
+          mapaClavesPorUserId[authUserId] = claveTexto;
+        }
+
+        if (usuarioSolicitudTexto && !mapaClavesPorUsuario[usuarioSolicitudTexto]) {
+          mapaClavesPorUsuario[usuarioSolicitudTexto] = claveTexto;
+        }
+      });
+
       usuariosAdminOriginalCache = (perfiles || []).map((perfil) => {
         const instalacion = mapaInstalaciones[perfil.id] || null;
+        const usuarioNormalizado = normalizarUsuarioClave(perfil.usuario || "");
+        const clavePanel = mapaClavesPorUserId[perfil.id] || mapaClavesPorUsuario[usuarioNormalizado] || "-";
 
         return {
           ...perfil,
@@ -2267,7 +2540,8 @@ document.addEventListener("DOMContentLoaded", () => {
           device_info: instalacion ? instalacion.device_info : "",
           fecha_vinculacion: instalacion ? instalacion.created_at : "",
           fecha_vinculacion_texto: instalacion ? formatearCreatedAt(instalacion.created_at) : "-",
-          instalacion_id_tabla: instalacion ? instalacion.id : ""
+          instalacion_id_tabla: instalacion ? instalacion.id : "",
+          clave_panel: clavePanel
         };
       });
 
