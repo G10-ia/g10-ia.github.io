@@ -779,6 +779,93 @@ document.addEventListener("DOMContentLoaded", () => {
     return { data, error };
   }
 
+
+async function registrarIngresoActividad(userId, nombreUsuario) {
+  if (!userId) return false;
+
+  try {
+    const ahora = new Date();
+    const anio = ahora.getFullYear();
+    const mes = String(ahora.getMonth() + 1).padStart(2, "0");
+    const dia = String(ahora.getDate()).padStart(2, "0");
+    const horas = String(ahora.getHours()).padStart(2, "0");
+    const minutos = String(ahora.getMinutes()).padStart(2, "0");
+    const segundos = String(ahora.getSeconds()).padStart(2, "0");
+
+    const fechaIngreso = `${anio}-${mes}-${dia}`;
+    const horaIngreso = `${horas}:${minutos}:${segundos}`;
+    const fechaHoraIngreso = ahora.toISOString();
+
+    const { data: actividadExistente, error: errorConsultaActividad } = await supabase
+      .from("actividad_sistema")
+      .select("user_id, contador_ingresos")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (errorConsultaActividad) {
+      console.error("Error consultando actividad del sistema:", errorConsultaActividad);
+      return false;
+    }
+
+    if (actividadExistente) {
+      const nuevoContador = Number(actividadExistente.contador_ingresos || 0) + 1;
+
+      const { error: errorUpdateActividad } = await supabase
+        .from("actividad_sistema")
+        .update({
+          usuario: nombreUsuario || "",
+          fecha_ingreso: fechaIngreso,
+          hora_ingreso: horaIngreso,
+          ultima_conexion: fechaHoraIngreso,
+          contador_ingresos: nuevoContador
+        })
+        .eq("user_id", userId);
+
+      if (errorUpdateActividad) {
+        console.error("Error actualizando actividad del sistema:", errorUpdateActividad);
+        return false;
+      }
+    } else {
+      const { error: errorInsertActividad } = await supabase
+        .from("actividad_sistema")
+        .insert([
+          {
+            user_id: userId,
+            usuario: nombreUsuario || "",
+            fecha_ingreso: fechaIngreso,
+            hora_ingreso: horaIngreso,
+            ultima_conexion: fechaHoraIngreso,
+            contador_ingresos: 1
+          }
+        ]);
+
+      if (errorInsertActividad) {
+        console.error("Error insertando actividad del sistema:", errorInsertActividad);
+        return false;
+      }
+    }
+
+    const { error: errorInsertHistorial } = await supabase
+      .from("actividad_sistema_historial")
+      .insert([
+        {
+          user_id: userId,
+          fecha_hora_ingreso: fechaHoraIngreso
+        }
+      ]);
+
+    if (errorInsertHistorial) {
+      console.error("Error insertando historial de actividad:", errorInsertHistorial);
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error general registrando ingreso de actividad:", error);
+    return false;
+  }
+}
+
+
   // =========================
   // FECHA Y HORA AUTOMATICAS
   // =========================
@@ -1174,6 +1261,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       perfilActual = perfil;
       esAdminActual = esAdminPerfil;
+
+      if (!esAdminPerfil) {
+        await registrarIngresoActividad(data.user.id, perfil.usuario || usuarioIngresado);
+      }
 
       localStorage.setItem("usuarioLogeado", perfil.usuario || usuarioIngresado);
       if (mensajeLogin) mensajeLogin.textContent = "";
@@ -2630,8 +2721,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const { data: perfiles, error: errorPerfiles } = await supabase
         .from("profiles")
-        .select("id, usuario, rol")
-        .neq("rol", "admin");
+        .select("id, usuario, rol");
 
       if (errorPerfiles) {
         console.error("Error cargando perfiles para actividad:", errorPerfiles);
@@ -2642,6 +2732,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const mapaUsuarios = {};
       (perfiles || []).forEach((perfil) => {
         if (!perfil || !perfil.id) return;
+        if ((perfil.rol || "").toLowerCase() === "admin") return;
         mapaUsuarios[perfil.id] = perfil.usuario || '';
       });
 
