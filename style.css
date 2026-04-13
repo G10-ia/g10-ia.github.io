@@ -1180,7 +1180,6 @@ body.con-boton-volver {
   box-shadow: 0 6px 14px rgba(0,0,0,0.25);
 }
 
-
 #btnEnviarSolicitud {
   background: linear-gradient(135deg, #27ae60, #1e8449);
   color: #fff;
@@ -1191,10 +1190,6 @@ body.con-boton-volver {
   box-shadow: 0 6px 14px rgba(39, 174, 96, 0.4);
 }
 
-#btnCancelarSolicitud {
-  background: #dcdcdc;
-  color: #333;
-}
 
 /* AVISO FIJO SOBRE FORMATO DE FOTO */
 .aviso-foto-importante {
@@ -1339,7 +1334,6 @@ body.con-boton-volver {
 .actividad-admin-detalle-item::before {
   content: "";
 }
-
 
 /* Base visual suave */
 :root {
@@ -2389,4 +2383,219 @@ textarea,
     font-size: 15px !important;
     padding: 0 10px !important;
   }
+}
+
+/* =========================================
+   LOGIN ELEGANTE Y MODAL SOLICITUD
+========================================= */
+.btn-login-principal {
+  width: 100%;
+  min-height: 52px;
+  height: auto;
+  border: none;
+  border-radius: 13px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: #2f4f6f;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(31, 55, 95, 0.16);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.btn-login-principal:hover {
+  background: #2a455f;
+}
+
+.btn-login-principal:active {
+  transform: scale(0.98);
+  background: #2a455f;
+}
+
+.btn-login-principal .icono-boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-login-principal .icono-boton svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.login-secundario {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.link-acceso {
+  margin-left: 6px;
+  color: #2f4f6f;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.link-acceso:hover,
+.link-acceso:focus {
+  color: #1f3f5f;
+  border-bottom-color: currentColor;
+  outline: none;
+}
+
+.modal-solicitud-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+/* ===== CANCELAR COMO ENLACE, CON ICONO SVG REAL ===== */
+.cancelar-link-contenedor {
+  text-align: center !important;
+}
+
+#btnCancelarSolicitud.cancelar-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: #6b7280 !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+#btnCancelarSolicitud.cancelar-link:hover,
+#btnCancelarSolicitud.cancelar-link:focus {
+  color: #ef4444 !important;
+  text-decoration: underline !important;
+  text-decoration-color: #ef4444 !important;
+  outline: none !important;
+}
+
+#btnCancelarSolicitud.cancelar-link .icono-cancelar {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex: 0 0 16px !important;
+}
+
+#btnCancelarSolicitud.cancelar-link .icono-cancelar svg {
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+  fill: currentColor !important;
+}
+/* ICONO CANCELAR - FIX VISUAL */
+#btnCancelarSolicitud .icono-cancelar {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  color: #6b7280; /* gris visible */
+}
+
+#btnCancelarSolicitud .icono-cancelar svg {
+  width: 16px;
+  height: 16px;
+  fill: #6b7280 !important; /* FORZAR color visible */
+}
+
+/* Hover rojo */
+#btnCancelarSolicitud:hover .icono-cancelar svg {
+  fill: #ef4444 !important;
+}
+.icono-cancelar {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+/* =========================================
+   CANCELAR MODAL - FIX DEFINITIVO
+========================================= */
+
+.cancelar-link-contenedor {
+  text-align: center !important;
+}
+
+#btnCancelarSolicitud.cancelar-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+
+  margin: 10px auto 0 auto !important;
+  padding: 0 !important;
+
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  color: #6b7280 !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+/* Oculta el SVG viejo que no está renderizando */
+#btnCancelarSolicitud .icono-cancelar {
+  display: none !important;
+}
+
+/* Crea el icono visible a la izquierda */
+#btnCancelarSolicitud.cancelar-link::before {
+  content: "✕" !important;
+  display: inline-block !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  color: #6b7280 !important;
+  margin-right: 2px !important;
+}
+
+/* Hover / focus */
+#btnCancelarSolicitud.cancelar-link:hover,
+#btnCancelarSolicitud.cancelar-link:focus {
+  color: #ef4444 !important;
+  text-decoration: underline !important;
+  text-decoration-color: #ef4444 !important;
+  outline: none !important;
+}
+
+#btnCancelarSolicitud.cancelar-link:hover::before,
+#btnCancelarSolicitud.cancelar-link:focus::before {
+  color: #ef4444 !important;
     }
