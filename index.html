@@ -37,7 +37,7 @@
       </div>
 
       <div class="campo-login">
-        <label for="claveLogin">Contrase&ntilde;a</label>
+        <label for="claveLogin">Contraseña</label>
         <div class="input-login password-wrapper">
           <span class="input-login-icono">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -65,23 +65,21 @@
         </div>
       </div>
 
-      <button id="btnIngresar" class="btn-login" type="button">
+      <button id="btnIngresar" class="btn-login-principal" type="button">
         <span class="icono-boton" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M10 17v-3H3v-4h7V7l5 5-5 5zm7-12H9V3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H9v-2h8V5z"/>
           </svg>
         </span>
-        <span>Ingresar</span>
+        <span>Acceder</span>
       </button>
 
-      <button id="btnAbrirSolicitud" class="btn-login btn-secundario-login" type="button">
-        <span class="icono-boton" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm18-11.5a1 1 0 0 0 0-1.41l-1.34-1.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75L21 5.75z"/>
-          </svg>
+      <div class="login-secundario">
+        ¿No tiene acceso?
+        <span id="btnAbrirSolicitud" class="link-acceso" role="button" tabindex="0">
+          Solicitar autorización
         </span>
-        <span>Solicitar acceso</span>
-      </button>
+      </div>
 
       <p id="mensajeLogin" class="mensaje-login"></p>
     </div>
@@ -106,21 +104,21 @@
             <path d="M10 17v-3H3v-4h7V7l5 5-5 5zm7-12H9V3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H9v-2h8V5z"/>
           </svg>
         </span>
-        <span>Cerrar Sesi&oacute;n</span>
+        <span>Cerrar Sesión</span>
       </button>
     </div>
 
     <div id="menuAdmin" class="app menu-admin" style="display:none; margin-top:16px;">
       <div class="menu-admin-header">
-        <h2 class="menu-admin-titulo">Panel de administraci&oacute;n</h2>
-        <p class="menu-admin-subtitulo">Seleccione un m&oacute;dulo</p>
+        <h2 class="menu-admin-titulo">Panel de administración</h2>
+        <p class="menu-admin-subtitulo">Seleccione un módulo</p>
       </div>
 
       <div class="menu-admin-grid">
         <button id="btnMenuRegistro" type="button" class="tarjeta-menu-admin">
           <div class="tarjeta-menu-icono" aria-hidden="true">&#128247;</div>
           <div class="tarjeta-menu-texto">
-            <div class="tarjeta-menu-titulo">Registro fotogr&aacute;fico</div>
+            <div class="tarjeta-menu-titulo">Registro fotográfico</div>
             <div class="tarjeta-menu-descripcion">Generar nueva imagen</div>
           </div>
         </button>
@@ -128,7 +126,7 @@
         <button id="btnMenuHistorial" type="button" class="tarjeta-menu-admin">
           <div class="tarjeta-menu-icono" aria-hidden="true">&#128194;</div>
           <div class="tarjeta-menu-texto">
-            <div class="tarjeta-menu-titulo">Historial de im&aacute;genes</div>
+            <div class="tarjeta-menu-titulo">Historial de imágenes</div>
             <div class="tarjeta-menu-descripcion">Consultar, filtrar y descargar</div>
           </div>
         </button>
@@ -136,7 +134,7 @@
         <button id="btnMenuUsuarios" type="button" class="tarjeta-menu-admin">
           <div class="tarjeta-menu-icono" aria-hidden="true">&#128101;</div>
           <div class="tarjeta-menu-texto">
-            <div class="tarjeta-menu-titulo">Administraci&oacute;n de usuarios</div>
+            <div class="tarjeta-menu-titulo">Administración de usuarios</div>
             <div class="tarjeta-menu-descripcion">Activar, desactivar y desvincular</div>
           </div>
         </button>
@@ -151,20 +149,19 @@
       </div>
     </div>
 
-    
     <div id="seccionRegistro" class="app" style="display:none;">
       <div id="envolturaBotonVolverRegistro" class="envoltura-boton-volver" style="display:none;">
         <button id="btnVolverMenuDesdeRegistro" type="button" class="btn-volver-menu">&larr; Volver al panel</button>
       </div>
 
-      <h1>Registro Fotogr&aacute;fico &#128247;</h1>
+      <h1>Registro Fotográfico &#128247;</h1>
 
       <div class="aviso-foto-importante">
         <div class="aviso-foto-importante-icono" aria-hidden="true">&#8505;&#65039;</div>
         <div class="aviso-foto-importante-texto">
           <strong>IMPORTANTE:</strong><br>
           La foto que se suba debe haber sido tomada en formato FULL, no en 3:4.<br>
-          Adem&aacute;s, se recomienda seleccionar la opci&oacute;n de m&aacute;ximo alejamiento antes de capturar la imagen.
+          Además, se recomienda seleccionar la opción de máximo alejamiento antes de capturar la imagen.
         </div>
       </div>
 
@@ -254,7 +251,7 @@
       </div>
 
       <div class="campo">
-        <label for="ubicacion">Ubicaci&oacute;n</label>
+        <label for="ubicacion">Ubicación</label>
         <textarea id="ubicacion" rows="4">SAN MARTIN-SAN MARTIN-LA BANDA DE SHILCAYO KM. 611 + 1257</textarea>
       </div>
 
@@ -458,7 +455,7 @@
     <div class="modal-solicitud-contenido">
       <div class="modal-solicitud-header">
         <h3>Solicitar acceso</h3>
-        <p>Complete sus datos. Su solicitud ser&aacute; revisada dentro de las 24 horas a partir de este env&iacute;o.</p>
+        <p>Complete sus datos. Su solicitud será revisada dentro de las 24 horas a partir de este envío.</p>
       </div>
 
       <div class="campo-login">
@@ -498,7 +495,7 @@
       </div>
 
       <div class="modal-solicitud-acciones">
-        <button id="btnCancelarSolicitud" type="button" class="btn-secundario-panel">Cancelar</button>
+
         <button id="btnEnviarSolicitud" type="button" class="btn-login">
           <span class="icono-boton" aria-hidden="true">
             <svg viewBox="0 0 24 24">
@@ -507,6 +504,18 @@
           </span>
           <span>Enviar solicitud</span>
         </button>
+
+        <div class="cancelar-link-contenedor">
+          <button id="btnCancelarSolicitud" type="button" class="cancelar-link">
+            <span class="icono-cancelar" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.7 2.88 18.3 9.17 12 2.88 5.71 4.29 4.29l6.3 6.3 6.29-6.3z"/>
+              </svg>
+            </span>
+            <span>Cancelar</span>
+          </button>
+        </div>
+
       </div>
 
       <p id="mensajeSolicitud" class="mensaje-login mensaje-solicitud"></p>
@@ -524,7 +533,21 @@
     </div>
   </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var linkAcceso = document.getElementById("btnAbrirSolicitud");
+      if (linkAcceso) {
+        linkAcceso.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            linkAcceso.click();
+          }
+        });
+      }
+    });
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js?v=20260412_2215"></script>
 </body>
-</html>
+            </html>
